@@ -7,7 +7,7 @@
 
 #include <cstdio>
 
-namespace Utill {
+namespace Util {
     template<typename _T>
     void swap(_T &var1, _T &var2) {
         _T tempVar1 = var1;
