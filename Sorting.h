@@ -121,10 +121,10 @@ namespace Sorting {
             std::memcpy(&pData[indexData], &pDataCopyLower[indexLowerPart], (lowerSize - indexLowerPart) * sizeof(T) );
         }
 
-        printf("\t> ");
-        for(int i = indexLowerStart; i <= indexUpperEnd; i++)
-            printf("%d.", pData[i]);
-        printf("\n");
+//        printf("\t> ");
+//        for(int i = indexLowerStart; i <= indexUpperEnd; i++)
+//            printf("%d.", pData[i]);
+//        printf("\n");
     }
     template <typename T>
     void mergeSort(T* pData, int indexStart, int indexLast)
@@ -135,7 +135,7 @@ namespace Sorting {
             // Calculate center index
             int centerIndex = indexStart + (indexLast - indexStart) / 2;
 
-            printf("MergeSort: %d:%d, %d:%d \n", indexStart, centerIndex,centerIndex+1, indexLast);
+//            printf("MergeSort: %d:%d, %d:%d \n", indexStart, centerIndex,centerIndex+1, indexLast);
             // Divide
             mergeSort(pData, indexStart, centerIndex);
             mergeSort(pData, centerIndex+1, indexLast);

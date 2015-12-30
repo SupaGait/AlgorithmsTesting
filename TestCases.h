@@ -69,8 +69,18 @@ void testMergeSort()
         char expectedResult[5] = {0, 1, 2, 3, 4};
         if ((result = isEqual(data, expectedResult, sizeof(expectedResult))) != 0)
             cout << "Assert error at: " << result << endl;
-
     }
+    {
+        int data[7] = {-1, 1, 2, -6, 200, 50, 2};
+        constexpr int ArraySize = sizeof(data)/sizeof(int);
+
+        Sorting::mergeSort(data, ArraySize);
+
+        int expectedResult[7] = { -6, -1, 1, 2, 2, 50, 200};
+        if ((result = isEqual(data, expectedResult, ArraySize)) != 0)
+            cout << "Assert error at: " << result << endl;
+    }
+
     cout << "Done with mergeSort test." << endl;
 }
 
