@@ -2,6 +2,7 @@
 #include <chrono>
 #include <memory>
 #include <cstring>
+#include <algorithm>    // STD::sort
 
 #include "TestCases.h"
 #include "Sorting.h"
@@ -24,22 +25,19 @@ template<typename ArrayType>
 class TestSorting
 {
 public:
-    TestSorting(const int arraySize):
-            m_testArraySize(arraySize)
-    {
-        m_TestArray.reset(new ArrayType[m_testArraySize]);
-    }
+    TestSorting(const unsigned int arraySize) : m_DataVec(arraySize){;}
 
     /*** Creates a copy from the testArray to perform the measurement on
     ***/
     void startSortMeasurement(const Sorting::SortMethod<ArrayType>& testMethod) {
         // Create a new array, and copy the content of the testArray.
-        unique_ptr<ArrayType> tempArray(new ArrayType[m_testArraySize]);
-        memcpy(tempArray.get(), m_TestArray.get(), m_testArraySize * sizeof(ArrayType));
+        //unique_ptr<ArrayType> tempArray(new ArrayType[m_testArraySize]);
+        //memcpy(tempArray.get(), m_DataVec.get(), m_testArraySize * sizeof(ArrayType));
+        std::vector<ArrayType> testVector(m_DataVec);
 
         // Do the test.
         auto startTime = chrono::system_clock::now();
-        testMethod.executeSort(m_TestArray.get(), m_testArraySize);
+        testMethod.executeSort(testVector);
         auto endTime = chrono::system_clock::now();
 
         // Print result.
@@ -47,12 +45,23 @@ public:
         cout << testMethod.getName() << ": " << elapsedTime.count() << "s" << endl;
     }
 private:
-    const int m_testArraySize;
-    unique_ptr<ArrayType> m_TestArray;
+    std::vector<ArrayType> m_DataVec;
 };
 
 
+
+#define testSorting(TYPE) \
+{ \
+    constexpr int ArraySize = 20000; \
+    TestSorting<TYPE> testCharSort(ArraySize); \
+    std::cout << std::endl << #TYPE << std::endl; \
+    testCharSort.startSortMeasurement(Sorting::SelectionSort<TYPE>()); \
+    testCharSort.startSortMeasurement(Sorting::MergeSort<TYPE>()); \
+    testCharSort.startSortMeasurement(Sorting::StdSort<TYPE>()); \
+}
+
 int main() {
+
 
     // Test Cases
     cout << "Running some functionality test cases: " << endl;
@@ -62,32 +71,45 @@ int main() {
 
     // Testing
     cout << "Running the measurements: " << endl;
-    TestSorting<char> testCharSort(20000);
+    {
+        testSorting(char)
+        testSorting(int)
+        testSorting(float)
+        testSorting(double)
+    }
+
+/*
+    TestSorting<char> testCharSort(ArraySize);
     cout << endl << "Char: " << endl;
     testCharSort.startSortMeasurement(Sorting::SelectionSort<char>());
     testCharSort.startSortMeasurement(Sorting::MergeSort<char>());
+    testCharSort.startSortMeasurement(Sorting::StdSort<char>());
     {
-        TestSorting<int> testIntSort(10000);
+        TestSorting<int> testIntSort(ArraySize);
         cout << endl << "Int: " << endl;
         testIntSort.startSortMeasurement(Sorting::SelectionSort<int>());
         testIntSort.startSortMeasurement(Sorting::MergeSort<int>());
+        testIntSort.startSortMeasurement(Sorting::StdSort<int>());
     }
     {
-        TestSorting<float> testFloatSort(10000);
+        TestSorting<float> testFloatSort(ArraySize);
         cout << endl << "float: " << endl;
         testFloatSort.startSortMeasurement(Sorting::SelectionSort<float>());
         testFloatSort.startSortMeasurement(Sorting::MergeSort<float>());
+        testFloatSort.startSortMeasurement(Sorting::StdSort<float>());
     }
     {
-        TestSorting<double> testDoubleSort(10000);
+        TestSorting<double> testDoubleSort(ArraySize);
         cout << endl << "double: " << endl;
         testDoubleSort.startSortMeasurement(Sorting::SelectionSort<double>());
         testDoubleSort.startSortMeasurement(Sorting::MergeSort<double>());
+        testDoubleSort.startSortMeasurement(Sorting::StdSort<double>());
     }
 
     cout << endl << "Same Char as 1st again: " << endl;
     testCharSort.startSortMeasurement(Sorting::SelectionSort<char>());
     testCharSort.startSortMeasurement(Sorting::MergeSort<char>());
-
+    testCharSort.startSortMeasurement(Sorting::StdSort<char>());
+*/
     return 0;
 }

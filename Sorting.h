@@ -166,7 +166,7 @@ namespace Sorting {
     {
     public:
         virtual ~SortMethod(){;}
-        virtual void executeSort(ArrayType* data, int dataSize) const = 0;
+        virtual void executeSort(std::vector<ArrayType> data) const = 0;
         virtual std::string const getName() const = 0;
     };
     template<typename ArrayType>
@@ -174,9 +174,9 @@ namespace Sorting {
     {
     public:
         MergeSort() : m_Name("MergeSort"){;}
-        virtual void executeSort(ArrayType* data, int dataSize) const
+        virtual void executeSort(std::vector<ArrayType> data) const
         {
-            Sorting::mergeSort(data, dataSize);
+            Sorting::mergeSort(&data[0], data.size());
         }
         virtual std::string const getName() const { return m_Name;}
     private:
@@ -187,9 +187,22 @@ namespace Sorting {
     {
     public:
         SelectionSort() : m_Name("SelectionSort"){;}
-        virtual void executeSort(ArrayType* data, int dataSize) const
+        virtual void executeSort(std::vector<ArrayType> data) const
         {
-            Sorting::selectionSort(data, dataSize);
+            Sorting::selectionSort(&data[0], data.size());
+        }
+        virtual std::string const getName() const { return m_Name;}
+    private:
+        std::string m_Name;
+    };
+    template<typename ArrayType>
+    class StdSort : public SortMethod<ArrayType>
+    {
+    public:
+        StdSort() : m_Name("std sort"){;}
+        virtual void executeSort(std::vector<ArrayType> data) const
+        {
+            std::sort(data.begin(),data.end()); // use default compare (<)
         }
         virtual std::string const getName() const { return m_Name;}
     private:
