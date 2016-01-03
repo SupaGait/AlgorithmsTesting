@@ -29,7 +29,7 @@ public:
 
     /*** Creates a copy from the testArray to perform the measurement on
     ***/
-    void startSortMeasurement(const Sorting::SortMethod<ArrayType>& testMethod) {
+    double startSortMeasurement(const Sorting::SortMethod<ArrayType>& testMethod, bool printResult = true) {
         // Create a new array, and copy the content of the testArray.
         //unique_ptr<ArrayType> tempArray(new ArrayType[m_testArraySize]);
         //memcpy(tempArray.get(), m_DataVec.get(), m_testArraySize * sizeof(ArrayType));
@@ -40,9 +40,13 @@ public:
         testMethod.executeSort(testVector);
         auto endTime = chrono::system_clock::now();
 
-        // Print result.
         chrono::duration<double> elapsedTime = endTime - startTime;
-        cout << testMethod.getName() << ": " << elapsedTime.count() << "s" << endl;
+
+        // Print result.
+        if(printResult)
+            cout << testMethod.getName() << ": " << elapsedTime.count() << "s" << endl;
+
+        return elapsedTime.count();
     }
 private:
     std::vector<ArrayType> m_DataVec;
@@ -50,10 +54,9 @@ private:
 
 
 
-#define testSorting(TYPE) \
+#define testSorting(TYPE, SIZE) \
 { \
-    constexpr int ArraySize = 20000; \
-    TestSorting<TYPE> testCharSort(ArraySize); \
+    TestSorting<TYPE> testCharSort(SIZE); \
     std::cout << std::endl << #TYPE << std::endl; \
     testCharSort.startSortMeasurement(Sorting::SelectionSort<TYPE>()); \
     testCharSort.startSortMeasurement(Sorting::MergeSort<TYPE>()); \
@@ -70,46 +73,28 @@ int main() {
     cout << endl;
 
     // Testing
-    cout << "Running the measurements: " << endl;
+    cout << "Running simple measurements: " << endl;
     {
-        testSorting(char)
-        testSorting(int)
-        testSorting(float)
-        testSorting(double)
+        constexpr int ArraySize = 1000;
+        testSorting(char, ArraySize)
+        testSorting(int, ArraySize)
+        testSorting(float, ArraySize)
+        testSorting(double, ArraySize)
     }
 
-/*
-    TestSorting<char> testCharSort(ArraySize);
-    cout << endl << "Char: " << endl;
-    testCharSort.startSortMeasurement(Sorting::SelectionSort<char>());
-    testCharSort.startSortMeasurement(Sorting::MergeSort<char>());
-    testCharSort.startSortMeasurement(Sorting::StdSort<char>());
+    cout << std::endl << "Running in exponential increasing size: " << endl;
+    cout << "Size , std sort, merge sort, selection sort " << endl;
+    double totalSelectionTime = 0;
+    double totalMergeTime = 0;
+    double totalStdTime = 0;
+    for(int i=10; i <= 100000; i = i*10 )
     {
-        TestSorting<int> testIntSort(ArraySize);
-        cout << endl << "Int: " << endl;
-        testIntSort.startSortMeasurement(Sorting::SelectionSort<int>());
-        testIntSort.startSortMeasurement(Sorting::MergeSort<int>());
-        testIntSort.startSortMeasurement(Sorting::StdSort<int>());
-    }
-    {
-        TestSorting<float> testFloatSort(ArraySize);
-        cout << endl << "float: " << endl;
-        testFloatSort.startSortMeasurement(Sorting::SelectionSort<float>());
-        testFloatSort.startSortMeasurement(Sorting::MergeSort<float>());
-        testFloatSort.startSortMeasurement(Sorting::StdSort<float>());
-    }
-    {
-        TestSorting<double> testDoubleSort(ArraySize);
-        cout << endl << "double: " << endl;
-        testDoubleSort.startSortMeasurement(Sorting::SelectionSort<double>());
-        testDoubleSort.startSortMeasurement(Sorting::MergeSort<double>());
-        testDoubleSort.startSortMeasurement(Sorting::StdSort<double>());
+        TestSorting<double> testCharSort(i); \
+        double stdTime = testCharSort.startSortMeasurement(Sorting::StdSort<double>(), false);
+        double mergeTime = testCharSort.startSortMeasurement(Sorting::MergeSort<double>(), false);
+        double selectionTime = testCharSort.startSortMeasurement(Sorting::SelectionSort<double>(), false);
+        std::cout << i << ": " << stdTime << "\t" << mergeTime << "\t" << selectionTime<< std::endl;
     }
 
-    cout << endl << "Same Char as 1st again: " << endl;
-    testCharSort.startSortMeasurement(Sorting::SelectionSort<char>());
-    testCharSort.startSortMeasurement(Sorting::MergeSort<char>());
-    testCharSort.startSortMeasurement(Sorting::StdSort<char>());
-*/
     return 0;
 }
