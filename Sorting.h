@@ -2,18 +2,27 @@
 // Created by gerard on 12/24/15.
 //
 
+/***
+ * Implemented sorting methods:
+ * - Selection Sort
+ * - Merge Sort
+ *
+ * Using templates to give the option to sort  arrays containing different basic types
+ */
+
 #ifndef ALGORITHMS_SORTING_H
 #define ALGORITHMS_SORTING_H
 
 #include <memory>
 #include <cstring>
 #include <cstdio>
+#include <cstring>
 #include "Util.h"
 
 namespace Sorting {
 
     template <typename T>
-    int findMinimalIndex(T* pData,int dataSize, int offset)
+    int findMinimalIndex(T* const pData,int dataSize, int offset)
     {
         int minIndex = offset;
         T minValue = pData[offset];
@@ -31,7 +40,7 @@ namespace Sorting {
     }
 
     template <typename T>
-    void selectionSort(T* pData, int dataSize)
+    void selectionSort(T* const pData, int dataSize)
     {
         // Sort the array using insertion sort
         for(int index=0; index<dataSize; index++)
@@ -51,7 +60,7 @@ namespace Sorting {
 
     // IndexUpperEnd is the last index containing data
     template <typename T>
-    void merge(T* pData, int indexLowerStart, int indexLowerEnd, int indexUpperEnd)
+    void merge(T* const pData, int indexLowerStart, int indexLowerEnd, int indexUpperEnd)
     {
         const int lowerSize = indexLowerEnd - indexLowerStart + 1;
         const int upperSize = indexUpperEnd - indexLowerEnd;
@@ -127,7 +136,7 @@ namespace Sorting {
 //        printf("\n");
     }
     template <typename T>
-    void mergeSort(T* pData, int indexStart, int indexLast)
+    void mergeSort(T* const pData, int indexStart, int indexLast)
     {
         // Recursively devise the array
         if(indexLast - indexStart > 0)
@@ -145,12 +154,47 @@ namespace Sorting {
         }
     }
     template <typename T>
-    void mergeSort(T* pData, int dataSize)
+    void mergeSort(T* const pData, int dataSize)
     {
         assert(dataSize > 0);
         mergeSort(pData, 0, dataSize-1);
     }
 
+    // Create an interface for sorting methods
+    template<typename ArrayType>
+    class SortMethod
+    {
+    public:
+        virtual ~SortMethod(){;}
+        virtual void executeSort(ArrayType* data, int dataSize) const = 0;
+        virtual std::string const getName() const = 0;
+    };
+    template<typename ArrayType>
+    class MergeSort : public SortMethod<ArrayType>
+    {
+    public:
+        MergeSort() : m_Name("MergeSort"){;}
+        virtual void executeSort(ArrayType* data, int dataSize) const
+        {
+            Sorting::mergeSort(data, dataSize);
+        }
+        virtual std::string const getName() const { return m_Name;}
+    private:
+        std::string m_Name;
+    };
+    template<typename ArrayType>
+    class SelectionSort : public SortMethod<ArrayType>
+    {
+    public:
+        SelectionSort() : m_Name("SelectionSort"){;}
+        virtual void executeSort(ArrayType* data, int dataSize) const
+        {
+            Sorting::selectionSort(data, dataSize);
+        }
+        virtual std::string const getName() const { return m_Name;}
+    private:
+        std::string m_Name;
+    };
 };
 
 

@@ -16,7 +16,7 @@ using namespace std;
 // Returns index if not equal
 // returns 0 if OK.
 template <typename T>
-int isEqual(T* array1, T* array2, int arraySize)
+int isEqual(T const * const array1, T const * const array2, int arraySize)
 {
     for (int i = 0; i < arraySize; ++i) {
         assert(array1[i] == array2[i]);

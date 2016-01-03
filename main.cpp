@@ -8,7 +8,7 @@
 
 
 /***********************
- * Main function of this file:
+ * Main function of this project:
  * - Testing efficiencies of different sorting algorithms.
  * Secondary intentions:
  * - Practise implementing different sorting strategies
@@ -17,31 +17,6 @@
  *************************/
 
 using namespace std;
-
-// Create an interface for sorting methods
-template<typename ArrayType>
-class SortMethod
-{
-public:
-    virtual void executeSort(ArrayType* data, int dataSize) = 0;
-};
-template<typename ArrayType>
-class MergeSort : public SortMethod<ArrayType>
-{
-    virtual void executeSort(ArrayType* data, int dataSize)
-    {
-        Sorting::mergeSort(data, dataSize);
-    }
-};
-template<typename ArrayType>
-class SelectionSort : public SortMethod<ArrayType>
-{
-    virtual void executeSort(ArrayType* data, int dataSize)
-    {
-        Sorting::selectionSort(data, dataSize);
-    }
-};
-
 
 // Use the same array with different sorting techniques.
 // Possible with different data types
@@ -54,11 +29,13 @@ public:
     {
         m_TestArray.reset(new ArrayType[m_testArraySize]);
     }
-    void startSortMeasurement(SortMethod<ArrayType>& testMethod)
-    {
+
+    /*** Creates a copy from the testArray to perform the measurement on
+    ***/
+    void startSortMeasurement(const Sorting::SortMethod<ArrayType>& testMethod) {
         // Create a new array, and copy the content of the testArray.
         unique_ptr<ArrayType> tempArray(new ArrayType[m_testArraySize]);
-        memcpy(tempArray.get(), m_TestArray.get(), m_testArraySize*sizeof(ArrayType));
+        memcpy(tempArray.get(), m_TestArray.get(), m_testArraySize * sizeof(ArrayType));
 
         // Do the test.
         auto startTime = chrono::system_clock::now();
@@ -67,7 +44,7 @@ public:
 
         // Print result.
         chrono::duration<double> elapsedTime = endTime - startTime;
-        cout << elapsedTime.count() << "s" << endl;
+        cout << testMethod.getName() << ": " << elapsedTime.count() << "s" << endl;
     }
 private:
     const int m_testArraySize;
@@ -83,35 +60,34 @@ int main() {
     testMergeSort();
     cout << endl;
 
-    // Create the sorting methods/interfaces.
-    MergeSort<char> mergeSort;
-    SelectionSort<char> selectionSort;
-
     // Testing
     cout << "Running the measurements: " << endl;
-    TestSorting<char> testCharSort(10000);
-    testCharSort.startSortMeasurement(selectionSort);
-    testCharSort.startSortMeasurement(mergeSort);
-
-    if(0){
-        const int arraySize = 100000;
-        int largeArray[arraySize];
-
-        auto startTime = chrono::system_clock::now();
-        Sorting::selectionSort(largeArray, arraySize);
-        auto endTime = chrono::system_clock::now();
-        chrono::duration<double> elapsedTime = endTime - startTime;
-        cout << elapsedTime.count() << "s " << "for selectionSort." << endl;
+    TestSorting<char> testCharSort(20000);
+    cout << endl << "Char: " << endl;
+    testCharSort.startSortMeasurement(Sorting::SelectionSort<char>());
+    testCharSort.startSortMeasurement(Sorting::MergeSort<char>());
+    {
+        TestSorting<int> testIntSort(10000);
+        cout << endl << "Int: " << endl;
+        testIntSort.startSortMeasurement(Sorting::SelectionSort<int>());
+        testIntSort.startSortMeasurement(Sorting::MergeSort<int>());
     }
-    if(0){
-        int largeArray[100000];
-
-        auto startTime = chrono::system_clock::now();
-        Sorting::mergeSort(largeArray, sizeof(largeArray));
-        auto endTime = chrono::system_clock::now();
-        chrono::duration<double> elapsedTime = endTime - startTime;
-        cout << elapsedTime.count() << "s " << "for MergeSort." << endl;
+    {
+        TestSorting<float> testFloatSort(10000);
+        cout << endl << "float: " << endl;
+        testFloatSort.startSortMeasurement(Sorting::SelectionSort<float>());
+        testFloatSort.startSortMeasurement(Sorting::MergeSort<float>());
     }
+    {
+        TestSorting<double> testDoubleSort(10000);
+        cout << endl << "double: " << endl;
+        testDoubleSort.startSortMeasurement(Sorting::SelectionSort<double>());
+        testDoubleSort.startSortMeasurement(Sorting::MergeSort<double>());
+    }
+
+    cout << endl << "Same Char as 1st again: " << endl;
+    testCharSort.startSortMeasurement(Sorting::SelectionSort<char>());
+    testCharSort.startSortMeasurement(Sorting::MergeSort<char>());
 
     return 0;
 }
