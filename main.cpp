@@ -52,15 +52,13 @@ private:
     std::vector<ArrayType> m_DataVec;
 };
 
-
-
-#define testSorting(TYPE, SIZE) \
-{ \
-    TestSorting<TYPE> testCharSort(SIZE); \
-    std::cout << std::endl << #TYPE << std::endl; \
-    testCharSort.startSortMeasurement(Sorting::SelectionSort<TYPE>()); \
-    testCharSort.startSortMeasurement(Sorting::MergeSort<TYPE>()); \
-    testCharSort.startSortMeasurement(Sorting::StdSort<TYPE>()); \
+template<typename Type, int Size>
+void testSorting() {
+    TestSorting<Type> testCharSort(Size);
+    std::cout << std::endl << typeid(Type).name() << std::endl;
+    testCharSort.startSortMeasurement(Sorting::SelectionSort<Type>());
+    testCharSort.startSortMeasurement(Sorting::MergeSort<Type>());
+    testCharSort.startSortMeasurement(Sorting::StdSort<Type>());
 }
 
 int main() {
@@ -76,10 +74,10 @@ int main() {
     cout << "Running simple measurements: " << endl;
     {
         constexpr int ArraySize = 1000;
-        testSorting(char, ArraySize)
-        testSorting(int, ArraySize)
-        testSorting(float, ArraySize)
-        testSorting(double, ArraySize)
+        testSorting<char,ArraySize>();
+        testSorting<int,ArraySize>();
+        testSorting<float,ArraySize>();
+        testSorting<double,ArraySize>();
     }
 
     cout << std::endl << "Running in exponential increasing size: " << endl;
