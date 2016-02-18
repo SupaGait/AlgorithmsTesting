@@ -17,8 +17,6 @@
  * - Practise design patterns.
  *************************/
 
-using namespace std;
-
 // Use the same array with different sorting techniques.
 // Possible with different data types
 template<typename ArrayType>
@@ -52,7 +50,7 @@ private:
     std::vector<ArrayType> m_DataVec;
 };
 
-template<typename Type, int Size>
+template<typename Type, unsigned int Size>
 void testSorting() {
     TestSorting<Type> testCharSort(Size);
     std::cout << std::endl << typeid(Type).name() << std::endl;
@@ -73,26 +71,32 @@ int main() {
     // Testing
     cout << "Running simple measurements: " << endl;
     {
-        constexpr int ArraySize = 1000;
-        testSorting<char,ArraySize>();
-        testSorting<int,ArraySize>();
-        testSorting<float,ArraySize>();
-        testSorting<double,ArraySize>();
+        constexpr unsigned int ArraySize = 1000;
+        testSorting<char, ArraySize> ();
+        testSorting<int, ArraySize>();
+        testSorting<float, ArraySize>();
+        testSorting<double, ArraySize>();
     }
 
-    cout << std::endl << "Running in exponential increasing size: " << endl;
+    cout << std::endl << "Running in linear increasing size: " << endl;
     cout << "Size , std sort, merge sort, selection sort " << endl;
-    double totalSelectionTime = 0;
-    double totalMergeTime = 0;
     double totalStdTime = 0;
-    for(int i=10; i <= 100000; i = i*10 )
+    double totalMergeTime = 0;
+    double totalSelectionTime = 0;
+    for(unsigned int i=10; i <= 100000; i = i*10 )
     {
         TestSorting<double> testCharSort(i); \
         double stdTime = testCharSort.startSortMeasurement(Sorting::StdSort<double>(), false);
         double mergeTime = testCharSort.startSortMeasurement(Sorting::MergeSort<double>(), false);
         double selectionTime = testCharSort.startSortMeasurement(Sorting::SelectionSort<double>(), false);
         std::cout << i << ": " << stdTime << "\t" << mergeTime << "\t" << selectionTime<< std::endl;
+
+        // Add current time
+        totalStdTime += stdTime;
+        totalMergeTime += mergeTime;
+        totalSelectionTime += selectionTime;
     }
+    std::cout << std::endl << "Total time:" << totalStdTime << "\t" << totalMergeTime << "\t" << totalSelectionTime<< std::endl;
 
     return 0;
 }
