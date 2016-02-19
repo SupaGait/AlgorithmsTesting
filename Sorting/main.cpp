@@ -61,7 +61,6 @@ void testSorting() {
 
 int main() {
 
-
     // Test Cases
     cout << "Running some functionality test cases: " << endl;
     testSelectionSort();

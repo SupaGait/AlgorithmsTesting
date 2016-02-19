@@ -1,0 +1,49 @@
+@startuml
+
+
+abstract List<T>{
+ + virutal ~List()
+ + add(T element)
+ + remove(uint position)
+ + getAt(uint position) : T
+ + isEmpty() : bool
+ + size(): uint
+}
+
+class ArrayList<T>{
+    - arrayData : uniquePtr<T>
+    - arraySize : uint
+    + ArrayList(uint size)
+}
+note bottom of ArrayList
+Array based implementation
+- Elements are contiguously laid out in memory
+- If more elements are added then the array can hold,
+  the array with elements is re-allocated
+end note
+
+class LinkedList<T>{
+    - head : Node<T>
+    - size : uint
+}
+note bottom of LinkedList
+Dynamic based implementation
+- Elements are possibly spread across memory
+- Each added element is newly created in memory
+end note
+
+class Node<T>{
+    - previous : Node<T>
+    - next : Node<T>
+    - element : T
+
+    + getElement() : T
+    + setNext(Node<t>)
+    + setPrevious(Node<t>)
+}
+
+List <|.. ArrayList
+List <|.. LinkedList
+LinkedList -> Node
+
+@enduml
