@@ -35,11 +35,13 @@ int main()
         printListSize(arrayList);
         printListElements(arrayList);
 
+        cout << endl;
         arrayList.add( SomeClass() );
         arrayList.add( SomeClass() );
         printListSize(arrayList);
         printListElements(arrayList);
 
+        cout << endl;
         arrayList.add( SomeClass() );
         arrayList.add( SomeClass() );
         printListSize(arrayList);

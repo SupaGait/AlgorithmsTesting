@@ -19,7 +19,7 @@ private:
 
 public:
     ArrayList(unsigned int initialSize):
-            m_arrayData( new T[initialSize] ),
+            m_arrayData( (T*) operator new ( sizeof(T)*initialSize)),
             m_arraySize(initialSize),
             m_elementCount(0)
     {
@@ -32,8 +32,8 @@ public:
             // Re-allocate, double size, create new, move old data, delete old
             auto newArraySize = m_arraySize * 2;
 
-            std::unique_ptr<T> m_biggerArrayData(new T[newArraySize]);
-            memcpy(m_biggerArrayData.get(), m_arrayData.get(), m_arraySize );
+            std::unique_ptr<T> m_biggerArrayData( (T*) operator new ( sizeof(T)*newArraySize) );
+            memcpy(m_biggerArrayData.get(), m_arrayData.get(), m_arraySize*sizeof(T) );
 
             // Save the new array and size, old one is auto deconstructed
             m_arraySize = newArraySize;
@@ -49,7 +49,7 @@ public:
 
     }
 
-    virtual T getAt(unsigned int i) const{
+    virtual T& getAt(unsigned int i) const{
         if(i > m_arraySize)
             throw std::out_of_range("out of range");
 

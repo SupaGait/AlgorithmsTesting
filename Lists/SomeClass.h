@@ -15,6 +15,7 @@ private:
     unsigned int m_nr;
 public:
     SomeClass();
+    ~SomeClass();
     unsigned int getNr();
     static void resetCounter();
 };

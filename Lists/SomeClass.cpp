@@ -11,8 +11,14 @@ using std::endl;
 unsigned int SomeClass::m_totalNr = 0;
 
 SomeClass::SomeClass():
-        m_nr(m_totalNr){
+        m_nr(m_totalNr)
+{
+    //cout << "Created SomeClass: " << m_nr << endl;
     m_totalNr++;
+}
+SomeClass::~SomeClass()
+{
+    //cout << "Destructor SomeClass: " << m_nr << endl;
 }
 unsigned int SomeClass::getNr(){
     return m_nr;
