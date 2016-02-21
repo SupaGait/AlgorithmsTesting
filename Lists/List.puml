@@ -5,7 +5,7 @@ abstract List<T>{
  + virutal ~List()
  + add(T element)
  + remove(uint position)
- + getAt(uint position) : T
+ + getAt(uint position) : T&
  + isEmpty() : bool
  + size(): uint
 }

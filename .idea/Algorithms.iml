@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Lists/ArrayList.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Lists/SomeClass.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Lists/List.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Lists/LinkedList.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Lists/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Lists/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Lists/SomeClass.cpp" isTestSource="false" />
