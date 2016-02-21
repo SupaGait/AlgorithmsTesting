@@ -28,9 +28,9 @@ public:
 
     ~ArrayList()
     {
-//#ifdef DEBUG
+#ifdef DEBUG
         std::cout << "--Destructor Arraylist--- " << std::endl;
-//#endif
+#endif
     }
 
     /***
@@ -67,6 +67,7 @@ public:
 
     /***
      * Remove element at position
+     * First position is 0.
      * - All elements above the position will be shifted
      * - Pointers to elements above position will not be valid anymore
      */
@@ -81,8 +82,10 @@ public:
         {
             // Delete the element by moving the next element 1 back
             memmove( &array[position], &array[position+1], sizeof(T)*(m_elementCount-position) );
-            --m_elementCount;
         }
+
+        // Result is always one element less.
+        --m_elementCount;
     }
 
     virtual T& getAt(unsigned int i) const{

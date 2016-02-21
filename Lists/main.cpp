@@ -31,25 +31,35 @@ int main()
         SomeClass::resetCounter();
 
         ArrayList<SomeClass> arrayList;
-        printListSize(arrayList);
         printListElements(arrayList);
 
         cout << endl;
         SomeClass sjon = SomeClass("Sjon1");
         arrayList.add( sjon );
         arrayList.add( SomeClass("Sjaak2"));
-        printListSize(arrayList);
         printListElements(arrayList);
 
         cout << endl;
         arrayList.add( SomeClass("Henk3") );
         arrayList.add( SomeClass("Piet4") );
-        printListSize(arrayList);
         printListElements(arrayList);
-
-        cout << endl << "will ArrayList be destructed?" << endl;
     }
 
-    cout << endl << "Is everyting Destructed?.." << endl;
+    {
+        cout << endl << "Test removing elements." << endl;
+        SomeClass::resetCounter();
+
+        ArrayList<SomeClass> arrayList;
+        arrayList.add( SomeClass("PersonPos0") );
+        arrayList.add( SomeClass("PersonPos1") );
+        arrayList.add( SomeClass("PersonPos2") );
+        arrayList.add( SomeClass("PersonPos3 < delete") );
+        arrayList.add( SomeClass("PersonPos4") );
+        arrayList.add( SomeClass("PersonPos5") );
+        printListElements(arrayList);
+
+        arrayList.remove(3);
+        printListElements(arrayList);
+    }
 }
 

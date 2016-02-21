@@ -4,7 +4,6 @@
 
 #include "SomeClass.h"
 #include <iostream>
-
 using std::cout;
 using std::endl;
 
@@ -17,12 +16,16 @@ SomeClass::SomeClass(const std::string& name):
         m_nr(m_totalNr),
         m_name(name)
 {
+#ifdef DEBUG
     cout << "Created SomeClass: " << m_nr << " " << m_name << endl;
+#endif
     ++m_totalNr;
 }
 SomeClass::~SomeClass()
 {
+#ifdef DEBUG
     cout << "Destructor SomeClass: " << m_nr << " " << m_name << endl;
+#endif
 }
 std::string SomeClass::getName(){
     return m_name;
@@ -31,19 +34,12 @@ void SomeClass::resetCounter(){
     m_totalNr=0;
 }
 
-
-/***
- * Helper function: print content
- */
-void printListSize(const List<SomeClass> &arrayList)
-{
-    cout << "Size: " << arrayList.size() << endl;
-}
 /***
  * Helper function: print elements
  */
 void printListElements(const List<SomeClass> &arrayList)
 {
+    cout << "Size: " << arrayList.size() << endl;
     for(unsigned int i=0; i<arrayList.size();i++)
     {
         cout << "Element: " << i << " content: " << arrayList.getAt(i).getName() << endl;
