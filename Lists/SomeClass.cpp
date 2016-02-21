@@ -11,17 +11,21 @@ using std::endl;
 unsigned int SomeClass::m_totalNr = 0;
 
 SomeClass::SomeClass():
-        m_nr(m_totalNr)
+        SomeClass("O_o"){
+}
+SomeClass::SomeClass(const std::string& name):
+        m_nr(m_totalNr),
+        m_name(name)
 {
-    //cout << "Created SomeClass: " << m_nr << endl;
-    m_totalNr++;
+    cout << "Created SomeClass: " << m_nr << " " << m_name << endl;
+    ++m_totalNr;
 }
 SomeClass::~SomeClass()
 {
-    //cout << "Destructor SomeClass: " << m_nr << endl;
+    cout << "Destructor SomeClass: " << m_nr << " " << m_name << endl;
 }
-unsigned int SomeClass::getNr(){
-    return m_nr;
+std::string SomeClass::getName(){
+    return m_name;
 }
 void SomeClass::resetCounter(){
     m_totalNr=0;
@@ -42,6 +46,7 @@ void printListElements(const List<SomeClass> &arrayList)
 {
     for(unsigned int i=0; i<arrayList.size();i++)
     {
-        cout << "Element: " << i << " content: " << arrayList.getAt(i).getNr() << endl;
+        cout << "Element: " << i << " content: " << arrayList.getAt(i).getName() << endl;
     }
 }
+

@@ -6,17 +6,19 @@
 #define ALGORITHMS_SOMECLASS_H
 
 #include "List.h"
-
+#include <string>
 
 class SomeClass
 {
 private:
     static unsigned int m_totalNr;
     unsigned int m_nr;
+    std::string m_name;
 public:
     SomeClass();
+    SomeClass(const std::string& name);
     ~SomeClass();
-    unsigned int getNr();
+    std::string getName();
     static void resetCounter();
 };
 void printListSize(const List<SomeClass> &arrayList);
