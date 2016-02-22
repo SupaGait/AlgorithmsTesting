@@ -39,8 +39,9 @@ void SomeClass::resetCounter(){
  */
 void printListElements(const List<SomeClass> &arrayList)
 {
-    cout << "Size: " << arrayList.size() << endl;
-    for(unsigned int i=0; i<arrayList.size();i++)
+    auto size = arrayList.size();
+    cout << "Size: " << size << endl;
+    for(unsigned int i=0; i<size ;i++)
     {
         cout << "Element: " << i << " content: " << arrayList.getAt(i).getName() << endl;
     }

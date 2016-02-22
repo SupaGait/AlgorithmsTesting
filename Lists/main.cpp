@@ -6,6 +6,7 @@
 #include <iostream>
 #include "SomeClass.h"
 #include "ArrayList.h"
+#include "LinkedList.h"
 
 void testArrayList();
 
@@ -14,20 +15,28 @@ void testGet(List<SomeClass> &&list);
 void testAdd(List<SomeClass> &&list);
 void testRemove(List<SomeClass> &&list);
 
+void testLinkedList();
+
 using std::cout;
 using std::endl;
 
 int main()
 {
-    testArrayList();
+    //testArrayList();
+    testLinkedList();
+}
+
+void testLinkedList() {
+
+    testAdd( LinkedList<SomeClass>() );
 }
 
 void testArrayList() {
 
     // Test functionality of arraylist
     // Each function receives a new instance
-    testGet( ArrayList<SomeClass>() );
     testAdd( ArrayList<SomeClass>() );
+    testGet( ArrayList<SomeClass>() );
     testRemove( ArrayList<SomeClass>() );
 
 }
@@ -76,5 +85,5 @@ void testGet(List<SomeClass> &&list) {
     catch (const std::exception e) {
         cout << "Ow damm.. there was an exception (Yes, this is actually good) : " << e.what() << endl;
     }
-   }
+}
 

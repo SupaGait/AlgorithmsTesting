@@ -88,6 +88,7 @@ public:
         --m_elementCount;
     }
 
+
     virtual T& getAt(unsigned int i) const{
         if(i > m_elementCount)
             throw std::out_of_range("getAt()");
